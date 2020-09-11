@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">HeartRate</string>
+    <string name="heart_rate_display">Heart Rate Display</string>
+</resources>
