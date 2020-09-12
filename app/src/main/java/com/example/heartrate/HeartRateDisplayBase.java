@@ -29,7 +29,9 @@ import com.dsi.ant.plugins.antplus.pccbase.AntPlusLegacyCommonPcc.IVersionAndMod
 import com.dsi.ant.plugins.antplus.pccbase.PccReleaseHandle;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 
 public abstract class HeartRateDisplayBase extends Activity {
     protected abstract void OnCreate(Bundle savedInstanceState);
@@ -64,10 +66,13 @@ public abstract class HeartRateDisplayBase extends Activity {
 
     TextView tv_dataStatus;
     TextView tv_rrFlag;
+    ArrayList<Double> numArray;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        numArray = new ArrayList<>();
 
         handleReset();
     }
@@ -137,6 +142,7 @@ public abstract class HeartRateDisplayBase extends Activity {
         tv_rrFlag.setText("---");
     }
     public void SubscribetoHrEvents() {
+
         hrPcc.subscribeHeartRateDataEvent(new IHeartRateDataReceiver() {
             @Override
             public void onNewHeartRateData(final long estTimestamp, EnumSet<EventFlag> eventFlags,final int computedHeartRate,final long heartBeatCount,final BigDecimal heartBeatEventTime,final DataState dataState)
@@ -227,20 +233,19 @@ public abstract class HeartRateDisplayBase extends Activity {
         });
         hrPcc.subscribeCalculatedRrIntervalEvent(new ICalculatedRrIntervalReceiver() {
             @Override
-            public void onNewCalculatedRrInterval(final long estTimestamp, EnumSet<EventFlag> eventFlags,final BigDecimal rrInterval,final RrFlag flag)
-            {
+            public void onNewCalculatedRrInterval(final long estTimestamp, EnumSet<EventFlag> eventFlags, final BigDecimal rrInterval, final RrFlag flag) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        tv_estTimestamp.setText(String.valueOf(estTimestamp));
-                        tv_rrFlag.setText(flag.toString());
-
                         // Mark RR with asterisk if source is not cached or page 4
                         if (flag.equals(RrFlag.DATA_SOURCE_CACHED)
                                 || flag.equals(RrFlag.DATA_SOURCE_PAGE_4))
                             tv_calculatedRrInterval.setText(String.valueOf(rrInterval));
                         else
-                            tv_calculatedRrInterval.setText(String.valueOf(rrInterval) + "*");
+                            tv_calculatedRrInterval.setText(rrInterval + "*");
+                        numArray.add(rrInterval.doubleValue());
+                        double sdev = CalculateSD(numArray);
+                        tv_manufacturerID.setText(String.valueOf(sdev));
                     }
                 });
             }
@@ -253,7 +258,7 @@ public abstract class HeartRateDisplayBase extends Activity {
                     @Override
                     public void run() {
                         tv_estTimestamp.setText(String.valueOf(estTimestamp));
-                        tv_rssi.setText(String.valueOf(rssi)+"dBm");
+                        tv_rssi.setText(rssi + "dBm");
                     }
                 });
             }
@@ -356,11 +361,10 @@ public abstract class HeartRateDisplayBase extends Activity {
         getMenuInflater().inflate(R.menu.activity_heart_rate, menu);
         return true;
     }
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch(item.getItemId())
-        {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.menu_reset:
                 handleReset();
                 tv_status.setText("Resetting.....");
@@ -368,5 +372,18 @@ public abstract class HeartRateDisplayBase extends Activity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public double CalculateSD(List<Double> numArray) {
+        double sum = 0.0, standardDeviation = 0.0;
+        int len = numArray.size();
+        for (double num : numArray) {
+            sum += num;
+        }
+        double mean = sum / len;
+        for (double num : numArray) {
+            standardDeviation += Math.pow(num - mean, 2);
+        }
+        return Math.sqrt(standardDeviation / len);
     }
 }

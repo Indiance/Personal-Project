@@ -112,7 +112,7 @@
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10"
-        android:text="PreviousHeartBeatEventTime"
+        android:text="PreviousHBEventTime"
         tools:text="PreviousHeartBeatEventTime" />
 
     <TextView
@@ -150,12 +150,13 @@
         android:layout_marginStart="4dp"
         android:layout_marginLeft="4dp"
         android:layout_marginTop="16dp"
+        android:text="SDNN"
+        android:textColor="#4CAF50"
         android:textSize="18sp"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
-        android:text="ManufacturerID"
-        tools:text="ManufacturerID" />
+        tools:text="SDNN" />
 
     <TextView
         android:id="@+id/textView8"
@@ -372,6 +373,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
+        android:textColor="#8BC34A"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_CumulativeOperatingTime" />
