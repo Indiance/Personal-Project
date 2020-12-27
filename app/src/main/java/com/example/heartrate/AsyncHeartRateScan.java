@@ -36,14 +36,14 @@ public class AsyncHeartRateScan extends HeartRateDisplayBase {
     private void initScanDisplay()
     {
         setContentView(R.layout.activity_async_scan);
-        mTextView_Status = (TextView)findViewById(R.id.textView_Status);
+        mTextView_Status = findViewById(R.id.textView_Status);
         mTextView_Status.setText("Scanning for heart rate devices asynchronously...");
 
         mAlreadyConnectedDeviceInfos = new ArrayList<AsyncScanResultDeviceInfo>();
         mScannedDeviceInfos = new ArrayList<AsyncScanController.AsyncScanResultDeviceInfo>();
 
         adapter_connDevNameList = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1);
-        ListView listView_alreadyConnectedDevs = (ListView)findViewById(R.id.listView_AlreadyConnectedDevices);
+        ListView listView_alreadyConnectedDevs = findViewById(R.id.listView_AlreadyConnectedDevices);
         listView_alreadyConnectedDevs.setAdapter(adapter_connDevNameList);
         listView_alreadyConnectedDevs.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -53,7 +53,7 @@ public class AsyncHeartRateScan extends HeartRateDisplayBase {
             }
         });
         adapter_devNameList = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1);
-        ListView listView_Devices = (ListView)findViewById(R.id.listView_FoundDevices);
+        ListView listView_Devices = findViewById(R.id.listView_FoundDevices);
         listView_Devices.setAdapter(adapter_devNameList);
         listView_Devices.setOnItemClickListener(new OnItemClickListener() {
             @Override

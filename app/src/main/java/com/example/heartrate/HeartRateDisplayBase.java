@@ -44,18 +44,12 @@ public abstract class HeartRateDisplayBase extends Activity {
 
     TextView tv_estTimestamp;
 
-    TextView tv_rssi;
 
     TextView tv_computedHeartRate;
     TextView tv_heartBeatCounter;
     TextView tv_heartBeatEventTime;
 
-    TextView tv_manufacturerSpecificByte;
-    TextView tv_previousHeartBeatEventTime;
-
     TextView tv_calculatedRrInterval;
-
-    TextView tv_cumulativeOperatingTime;
 
     TextView tv_manufacturerID;
     TextView tv_serialNumber;
@@ -65,7 +59,6 @@ public abstract class HeartRateDisplayBase extends Activity {
     TextView tv_modelNumber;
 
     TextView tv_dataStatus;
-    TextView tv_rrFlag;
     ArrayList<Double> numArray;
 
 
@@ -91,18 +84,12 @@ public abstract class HeartRateDisplayBase extends Activity {
 
         tv_estTimestamp = findViewById(R.id.textView_EstTimestamp);
 
-        tv_rssi = findViewById(R.id.textView_Rssi);
-
         tv_computedHeartRate = findViewById(R.id.textView_ComputedHeartRate);
         tv_heartBeatCounter = findViewById(R.id.textView_HeartBeatCounter);
         tv_heartBeatEventTime = findViewById(R.id.textView_HeartBeatEventTime);
 
-        tv_manufacturerSpecificByte = findViewById(R.id.textView_ManufacturerSpecificByte);
-        tv_previousHeartBeatEventTime = findViewById(R.id.textView_PreviousHeartBeatEventTime);
-
         tv_calculatedRrInterval = findViewById(R.id.textView_CalculatedRrInterval);
 
-        tv_cumulativeOperatingTime = findViewById(R.id.textView_CumulativeOperatingTime);
 
         tv_manufacturerID = findViewById(R.id.textView_ManufacturerID);
         tv_serialNumber = findViewById(R.id.textView_SerialNumber);
@@ -112,25 +99,18 @@ public abstract class HeartRateDisplayBase extends Activity {
         tv_modelNumber = findViewById(R.id.textView_ModelNumber);
 
         tv_dataStatus = findViewById(R.id.textView_DataStatus);
-        tv_rrFlag = findViewById(R.id.textView_rRFlag);
 
         //Reset the text display
         tv_status.setText(status);
 
         tv_estTimestamp.setText("---");
 
-        tv_rssi.setText("---");
-
         tv_computedHeartRate.setText("---");
         tv_heartBeatCounter.setText("---");
         tv_heartBeatEventTime.setText("---");
 
-        tv_manufacturerSpecificByte.setText("---");
-        tv_previousHeartBeatEventTime.setText("---");
-
         tv_calculatedRrInterval.setText("---");
 
-        tv_cumulativeOperatingTime.setText("---");
 
         tv_manufacturerID.setText("---");
         tv_serialNumber.setText("---");
@@ -139,7 +119,6 @@ public abstract class HeartRateDisplayBase extends Activity {
         tv_softwareVersion.setText("---");
         tv_modelNumber.setText("---");
         tv_dataStatus.setText("---");
-        tv_rrFlag.setText("---");
     }
     public void SubscribetoHrEvents() {
 
@@ -179,9 +158,6 @@ public abstract class HeartRateDisplayBase extends Activity {
                     @Override
                     public void run() {
                         tv_estTimestamp.setText(String.valueOf(estTimeStamp));
-
-                        tv_manufacturerSpecificByte.setText(String.format("0x%02X",manufacturerSpecificByte));
-                        tv_previousHeartBeatEventTime.setText(String.valueOf(previousHeartBeatEventTime));
                     }
                 });
             }
@@ -194,8 +170,6 @@ public abstract class HeartRateDisplayBase extends Activity {
                     @Override
                     public void run() {
                         tv_estTimestamp.setText(String.valueOf(estTimestamp));
-
-                        tv_cumulativeOperatingTime.setText(String.valueOf(cumulativeOperatingTime));
                     }
                 });
             }
@@ -209,7 +183,6 @@ public abstract class HeartRateDisplayBase extends Activity {
                     public void run() {
                         tv_estTimestamp.setText(String.valueOf(estTimestamp));
 
-                        tv_manufacturerID.setText(String.valueOf(estTimestamp));
                         tv_serialNumber.setText(String.valueOf(serialNumber));
                     }
                 });
@@ -258,7 +231,6 @@ public abstract class HeartRateDisplayBase extends Activity {
                     @Override
                     public void run() {
                         tv_estTimestamp.setText(String.valueOf(estTimestamp));
-                        tv_rssi.setText(rssi + "dBm");
                     }
                 });
             }
@@ -274,7 +246,7 @@ public abstract class HeartRateDisplayBase extends Activity {
                     hrPcc = result;
                     tv_status.setText(result.getDeviceName() + ": " + initialDeviceState);
                     SubscribetoHrEvents();
-                    if(!result.supportsRssi()) tv_rssi.setText("N/A");
+                    if (!result.supportsRssi()) ;
                     break;
                 case USER_CANCELLED:
                     break;
